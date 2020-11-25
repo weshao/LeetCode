@@ -1,10 +1,9 @@
-class Solution:
-    def test(self,x):
-        if x > 1:
-            return 0
-        x = x + 1
-        return x
+def countdown(i):
+    print(i)
+    if i <= 1:
+        return
+    else:
+        countdown(i-1)
+        print(i)
 
-A = Solution()
-b = A.test(2)
-print(b)
+countdown(5)
