@@ -31,7 +31,7 @@
 #
 from typing import List
 # @lc code=start
-class Solution:
+""" class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
         combinations = []
         self.combine_recur(1, n, k, 0, [], combinations)
@@ -49,8 +49,27 @@ class Solution:
             self.combine_recur(i + 1, n, k, depth + 1, current, combinations)
             del current[-1]
         
+         """
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
 
+        def dfs(current, i):
+            if len(current) == k:
+                result.append(current[:])
+            
+            for j in range(i+1, n+1):
+                if k - len(current) > n - j + 1:
+                    continue
+                current.append(j)
+                dfs(current, j)
+                del current[-1]
+
+        result = []
+        if not n or not k:
+            return result
+        dfs([], 0)
+        return result
 # @lc code=end
 so = Solution()
-ans = so.combine(1, 1)
+ans = so.combine(5, 3)
 print(ans)

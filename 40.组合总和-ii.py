@@ -49,7 +49,7 @@
 
 from typing import Coroutine, List
 # @lc code=start
-class Solution:
+""" class Solution:
     def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
         candidates.sort()
         allCombinations = []
@@ -69,12 +69,65 @@ class Solution:
                 del currentSum[-1]
                 break
             del currentSum[-1]
+ """
+from typing import List
+# @lc code=start
+# class Solution:
+#     def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+#         allCombination = []
+#         candidates.sort()
+#         self.allCombinationSum(candidates, target, [], allCombination)
+#         return allCombination
+    
+#     def allCombinationSum(self, candidates, target, currentSum, allCombination):
+#         if target == 0:
+#             allCombination.append(list(currentSum))
+#             return True
+#         elif target <0:
+#             return
+#         for i in range(len(candidates)):
+#             currentSum.append(candidates[i])
+#             if self.allCombinationSum(candidates[i:], target - candidates[i], currentSum, allCombination):
+#                 del currentSum[-1]
+#                 break    
+#             del currentSum[-1]
 
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        result = []
+        if not candidates:
+            return result
+        
+        candidates.sort()
+        
 
+        def dfs(current, i, target):
+            if target == 0:
+                result.append(list(current))
+                return
+            if target < 0 or i >= len(candidates):
+                return
+            
+    
+            for j in range(i, len(candidates)):
+                if i != j and j>0 and candidates[j] == candidates[j-1]:
+                    continue
+                if candidates[j] <= target:
+                    current.append(candidates[j])
+                    dfs(current, j+1, target - candidates[j])
+                    del current[-1]
+                else:
+                    break
+            
+
+        # for i in range(len(candidates)):
+        #     if candidates[i] <= target:
+        dfs([], 0 , target)
+        return result
 
 
             
 # @lc code=end
 so = Solution()
-ans = so.combinationSum2(candidates = [10,1,2,7,6,1,5], target = 8)
+ans = so.combinationSum2(candidates = [2,5,2,1,2], target = 5)
 print(ans)

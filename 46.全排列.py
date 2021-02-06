@@ -31,7 +31,7 @@
 #
 from typing import List
 # @lc code=start
-class Solution:
+""" class Solution:
     def permute(self, nums: List[int]) -> List[List[int]]:
         size = len(nums)
         used = [False for _ in range(size)]
@@ -49,9 +49,32 @@ class Solution:
                 used[i] = True
                 self.permute_recur(nums, used, size, depth+1, current, permutation)
                 del  current[-1]
-                used[i] = False
+                used[i] = False """
                 #这一行完了，上一层的permute_recur就完了，然后执行 current[-1]
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        result = []
+        if not nums:
+            return result
+        used = [False for _ in range(len(nums))]
+
+        def dfs(current, index):
+            if index == len(nums):
+                result.append(list(nums))
+                return
+            
+            for i in range(index, len(nums)):
+                # if not used[i]:
+                    nums[index], nums[i] = nums[i], nums[index]
+                    # current.append(nums[i])
+                    # used[i] = True
+                    dfs(current, index+1)
+                    nums[index], nums[i] = nums[i], nums[index]
+                    # del current[-1]
+        dfs([], 0)
+        return result
+
 # @lc code=end
 so = Solution()
-ans = so.permute([])
+ans = so.permute([1, 2, 3])
 print(ans)

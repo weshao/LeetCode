@@ -78,20 +78,59 @@
 # @lc code=start
 class Solution:
     def isMatch(self, s: str, p: str) -> bool:
-        if len(s) < len(p):
-            return False
-        i = 0
-        j = 0
-        while i < len(s):
-            if s[i] == p[j] or p[j] == '.':
-                i += 1
-                j += 1
-            
-            elif p[j] == '*' and (p[j-1] == '.' or s[j-1]:
+        ns = len(s)
+        np = len(p)
+        dp = [[False for _ in range(np+1)] for _ in range(ns+1)]
+        dp[0][0] = True
+        # dp[0][1] = False
+        for col in range(2, np+1):
+            if p[col-1] == '*':
+                dp[0][col] = dp[0][col-2]
 
+        for i in range(ns):
+            for j in range(np):
+                if p[j] == '*':
+                    if p[j-1] == '.' or p[j-1] == s[i]:
+                        dp[i+1][j+1] = (dp[i][j+1] or dp[i+1][j-1])
+                    elif p[j-1]!= s[i]:
+                        dp[i+1][j+1] = dp[i+1][j-1]
+                elif p[j] == '.' or s[i] == p[j]:
+                    dp[i+1][j+1] = dp[i][j]
+                else:
+                    dp[i+1][j+1] = False
+        return dp[-1][-1]
+""" class Solution:
+    def isMatch(self, s: str, p: str) -> bool:
+        if not p: return not s
+        if not s and len(p) == 1: return False 
 
-            else:
-                j += 1
+        nrow = len(s) + 1
+        ncol = len(p) + 1
 
+        dp = [[False for c in range(ncol)] for r in range(nrow)]
+        
+        dp[0][0] = True
+        dp[0][1] = False
+        for c in range(2, ncol):
+            j = c-1
+            if p[j] == '*': dp[0][c] = dp[0][c-2]
+        
+        for r in range(1, nrow):
+            i = r-1
+            for c in range(1, ncol):
+                j = c-1
+                if s[i] == p[j] or p[j] == '.':
+                    dp[r][c] = dp[r-1][c-1]
+                elif p[j] == '*':
+                    if p[j-1] == s[i] or p[j-1] == '.':
+                        dp[r][c] = dp[r-1][c] or dp[r][c-2]
+                    else:
+                        dp[r][c] = dp[r][c-2]
+                else:
+                    dp[r][c] = False
+
+        return dp[nrow-1][ncol-1] """
 # @lc code=end
-
+so = Solution()
+ans = so.isMatch(s = "a", p = "")
+print(ans)

@@ -64,6 +64,7 @@
 #
 from typing import List
 # @lc code=start
+'''
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
         SEG_COUNT = 4
@@ -95,8 +96,49 @@ class Solution:
         
         dfs(0, 0)
         return ans
+'''
+class Solution:
+    def restoreIpAddresses(self, s: str) -> List[str]:
+        result = []
+        if s == '':
+            return result
+        self.dfs(s, result, [], 0, 0)
+        return result
+    def dfs(self, s, result, current, index, i):
+        if index == 4:
+            if i == len(s):
+                result.append('.'.join(current))
+            return
+        if i >= len(s):
+            return
+
+        
+        if index == 0 and len(s) - i > 12:
+            return
+        elif index == 1 and len(s) - i > 9:
+            return
+        elif index == 2 and len(s) - i > 6:
+            return
+        elif index == 3 and len(s) - i > 3:
+            return
+
+        if s[i] == '0':
+            current.append('0')
+            self.dfs(s, result, current, index+1, i+1)
+            del current[-1]
+
+        else:
+            for j in range(i+1, i+4):
+                if j <= len(s) and int(s[i:j]) <= 255:
+                    current.append(s[i:j])
+                    self.dfs(s, result, current, index+1, j)
+                    del current[-1]
+
+
+
+
 
 # @lc code=end
 so = Solution()
-ans = so.restoreIpAddresses("101023")
+ans = so.restoreIpAddresses("25525511135")
 print(ans)
