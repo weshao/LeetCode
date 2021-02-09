@@ -31,16 +31,38 @@
 #
 
 # @lc code=start
+# class Solution:
+#     def numTrees(self, n: int) -> int:
+#         if not n: return 0
+#         dp = [1 for _ in range(n+1)]
+#         for i in range(2, n+1):
+#             _sum = 0
+#             for j in range(i):
+#                 _sum += dp[j] * dp[i-j-1]
+#             dp[i] = _sum
+#         return dp[n]
 class Solution:
     def numTrees(self, n: int) -> int:
-        if not n: return 0
-        dp = [1 for _ in range(n+1)]
-        for i in range(2, n+1):
-            _sum = 0
-            for j in range(i):
-                _sum += dp[j] * dp[i-j-1]
-            dp[i] = _sum
-        return dp[n]
+        if not n:
+            return 0
+        dp = [0 for i in range(n+1)]
+        def dfs(n):
+            if n <= 1:
+                return 1
+            if dp[n]:
+                return dp[n]
+            else:
+                count = 0
+                for i in range(1, n+1):
+                    leftCount = dfs(i-1)
+                    rightCount = dfs(n-i)
+                    count += (leftCount * rightCount)
+            dp[n] = count
+            return count
+            
+
+        
+        return dfs(n)
 # @lc code=end
 so = Solution()
 ans = so.numTrees(3)

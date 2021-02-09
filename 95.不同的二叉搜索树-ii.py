@@ -53,12 +53,12 @@
 from typing import List
 
 
-class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
-        self.val = val
-        self.left = left
-        self.right = right
-class Solution:
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+""" class Solution:
     def generateTrees(self, n: int) -> List[TreeNode]:
         if not n:
             return []
@@ -82,10 +82,37 @@ class Solution:
             
             return AllNodes
         
-        return dfs(1, n)
+        return dfs(1, n) """
+
+class Solution:
+    def generateTrees(self, n: int) -> List[TreeNode]:
+        def search(start, end):
+            result = []
+
+            for i in range(start, end+1):
+                if i == start:
+                    lefts = [None]
+                else:
+                    lefts = search(start, i-1)
+
+                if i == end:
+                    rights = [None]
+                else:                
+                    rights = search(i+1, end)
+                for left in lefts:
+                    for right in rights:
+                        tree = TreeNode(i)
+                        tree.left = left
+                        tree.right = right
+                        result.append(tree)
+
+            
+            return result
         
+        return search(1, n) if n > 0 else []
+
             
 # @lc code=end
 so = Solution()
-ans = so.generateTrees(3)
-print(ans)
+ans = so.generateTrees(4)
+print(len(ans))
